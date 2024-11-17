@@ -92,3 +92,11 @@ resource "aws_lb_listener" "front_end" {
     target_group_arn = aws_lb_target_group.main.arn
   }
 }
+
+# ECS Resources
+resource "aws_ecs_cluster" "main" {
+  name = var.ecs_cluster_name
+  tags = merge(local.common_tags, {
+    Name = "${local.project_name}-ecs-cluster"
+  })
+}

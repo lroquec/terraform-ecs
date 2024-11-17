@@ -45,3 +45,9 @@ variable "container_image" {
   type        = string
   
 }
+
+variable "ecs_cluster_name" {
+  description = "The name of the ECS cluster"
+  type        = string
+  
+}
