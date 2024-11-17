@@ -62,3 +62,22 @@ resource "aws_lb" "main" {
     Name = "${local.project_name}-alb"
   })
 }
+
+resource "aws_lb_target_group" "main" {
+  port        = 5000
+  protocol    = "HTTP"
+  vpc_id      = module.vpc.vpc_id
+  target_type = "ip"
+
+  health_check {
+    path                = "/"
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 5
+    interval            = 30
+  }
+
+tags = merge(local.common_tags, {
+    Name = "${local.project_name}-tg"
+  })  
+}
