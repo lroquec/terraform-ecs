@@ -24,7 +24,7 @@ resource "aws_security_group_rule" "allow_http_inbound" {
   security_group_id = aws_security_group.allow_http_inbound.id
 }
 
-resource "aws_security_group" "allow_container_inbound" {
+resource "aws_security_group" "allow_container" {
   vpc_id = module.vpc.vpc_id
   tags = merge(local.common_tags, {
     Name = "${local.project_name}-allow-http-sg"
@@ -37,7 +37,7 @@ resource "aws_security_group_rule" "allow_container_all_outbound" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.allow_container_inbound.id
+  security_group_id = aws_security_group.allow_container.id
 }
 
 resource "aws_security_group_rule" "allow_container_inbound" {
@@ -46,7 +46,7 @@ resource "aws_security_group_rule" "allow_container_inbound" {
   to_port           = 5000
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.allow_container_inbound.id
+  security_group_id = aws_security_group.allow_container.id
 }
 
 # ALB Resources
@@ -156,4 +156,63 @@ resource "aws_iam_role_policy" "ecs_execution_policy" {
       }
     ]
   })
+}
+
+resource "aws_ecs_task_definition" "main" {
+  family                   = var.task_definition_family
+  cpu                      = 256
+  memory                   = 512
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  execution_role_arn       = aws_iam_role.ecs_execution_role.arn
+
+  container_definitions = jsonencode([
+    {
+      name  = "MyContainer"
+      image = var.container_image
+      portMappings = [
+        {
+          containerPort = 5000
+          protocol      = "tcp"
+        }
+      ]
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = aws_cloudwatch_log_group.ecs_logs.name
+          "awslogs-region"        = data.aws_region.current.name
+          "awslogs-stream-prefix" = "ecs"
+        }
+      }
+      healthCheck = {
+        command     = ["CMD-SHELL", "curl -f http://localhost:5000/ || exit 1"]
+        interval    = 30
+        timeout     = 5
+        retries     = 3
+        startPeriod = 60
+      }
+    }
+  ])
+}
+
+resource "aws_ecs_service" "main" {
+  name            = var.ecs_service_name
+  cluster         = aws_ecs_cluster.main.id
+  task_definition = aws_ecs_task_definition.main.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets          = module.vpc.public_subnets
+    security_groups  = [aws_security_group.allow_container.id]
+    assign_public_ip = true
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.main.arn
+    container_name   = "MyContainer"
+    container_port   = 5000
+  }
+
+  depends_on = [aws_lb_listener.front_end]
 }

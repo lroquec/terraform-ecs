@@ -51,3 +51,14 @@ variable "ecs_cluster_name" {
   type        = string
   
 }
+
+variable "task_definition_family" {
+  description = "The family name of the task definition"
+  type        = string
+}
+
+variable "ecs_service_name" {
+  description = "The name of the ECS service"
+  type        = string
+  
+}
