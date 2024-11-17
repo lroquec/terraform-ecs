@@ -8,3 +8,8 @@ output "first_public_subnet_id" {
   value       = module.vpc.public_subnets[0]
 
 }
+
+output "alb_dns_name" {
+  description = "DNS name of the ALB"
+  value       = aws_lb.main.dns_name
+}
