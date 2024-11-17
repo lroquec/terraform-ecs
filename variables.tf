@@ -39,3 +39,9 @@ variable "subnet_config" {
     error_message = "The cidr_block config option must contain a valid CIDR block."
   }
 }
+
+variable "container_image" {
+  description = "The container image to use for the ECS service"
+  type        = string
+  
+}
