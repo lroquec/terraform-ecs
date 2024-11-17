@@ -54,7 +54,7 @@ resource "aws_lb" "main" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.allow_http_inbound.id]
-  subnets           = module.vpc.public_subnets
+  subnets            = module.vpc.public_subnets
 
   idle_timeout = 60
 
@@ -77,9 +77,9 @@ resource "aws_lb_target_group" "main" {
     interval            = 30
   }
 
-tags = merge(local.common_tags, {
+  tags = merge(local.common_tags, {
     Name = "${local.project_name}-tg"
-  })  
+  })
 }
 
 resource "aws_lb_listener" "front_end" {
@@ -150,8 +150,8 @@ resource "aws_iam_role_policy" "ecs_execution_policy" {
         Resource = "*"
       },
       {
-        Effect = "Allow"
-        Action = ["logs:CreateLogGroup"]
+        Effect   = "Allow"
+        Action   = ["logs:CreateLogGroup"]
         Resource = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/app/ecs/${var.project_name}*"
       }
     ]

@@ -43,13 +43,13 @@ variable "subnet_config" {
 variable "container_image" {
   description = "The container image to use for the ECS service"
   type        = string
-  
+
 }
 
 variable "ecs_cluster_name" {
   description = "The name of the ECS cluster"
   type        = string
-  
+
 }
 
 variable "task_definition_family" {
@@ -60,5 +60,5 @@ variable "task_definition_family" {
 variable "ecs_service_name" {
   description = "The name of the ECS service"
   type        = string
-  
+
 }
