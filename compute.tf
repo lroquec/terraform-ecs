@@ -104,3 +104,12 @@ resource "aws_ecs_cluster" "main" {
     Name = "${local.project_name}-ecs-cluster"
   })
 }
+
+resource "aws_cloudwatch_log_group" "ecs_logs" {
+  name              = "/app/ecs/${var.project_name}"
+  retention_in_days = 7
+
+  tags = merge(local.common_tags, {
+    Name = "${local.project_name}-ecs-logs"
+  })
+}
