@@ -93,6 +93,10 @@ resource "aws_lb_listener" "front_end" {
   }
 }
 
+# Data sources para obtener información de la cuenta y región
+data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
+
 # ECS Resources
 resource "aws_ecs_cluster" "main" {
   name = var.ecs_cluster_name
