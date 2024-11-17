@@ -48,3 +48,17 @@ resource "aws_security_group_rule" "allow_container_inbound" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.allow_container_inbound.id
 }
+
+# ALB Resources
+resource "aws_lb" "main" {
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.allow_http_inbound.id]
+  subnets           = module.vpc.public_subnets
+
+  idle_timeout = 60
+
+  tags = merge(local.common_tags, {
+    Name = "${local.project_name}-alb"
+  })
+}

@@ -28,7 +28,7 @@ variable "subnet_config" {
     }
     subnet2 = {
       cidr_block = "10.0.2.0/24"
-      public     = false
+      public     = true
     }
   }
 
