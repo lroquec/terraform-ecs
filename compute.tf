@@ -221,3 +221,19 @@ resource "aws_ecs_service" "main" {
     Name = "${local.project_name}-ecs-service"
   })
 }
+
+data "aws_route53_zone" "existing" {
+  name = "lroquec.com."
+}
+
+resource "aws_route53_record" "main" {
+  zone_id = data.aws_route53_zone.existing.zone_id
+  name    = "${var.ecs_service_name}.${data.aws_route53_zone.existing.name}"
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.main.dns_name
+    zone_id                = aws_lb.main.zone_id
+    evaluate_target_health = true
+  }
+}
