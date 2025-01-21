@@ -13,3 +13,8 @@ output "alb_dns_name" {
   description = "DNS name of the ALB"
   value       = aws_lb.main.dns_name
 }
+
+output "dns_name" {
+  description = "DNS name of the ALB"
+  value       = "${var.ecs_service_name}.${data.aws_route53_zone.existing.name}"
+}
