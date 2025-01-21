@@ -71,7 +71,7 @@ resource "aws_ecs_task_definition" "external_dns" {
       name  = "external-dns"
       image = "registry.k8s.io/external-dns/external-dns:${var.external_dns_image}"
       command = [
-        "--source=ecs",
+        "--source=service",
         "--domain-filter=${var.external_dns_domain_filter}",
         "--provider=aws",
         "--policy=sync",
