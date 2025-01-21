@@ -30,6 +30,14 @@ variable "subnet_config" {
       cidr_block = "10.0.2.0/24"
       public     = true
     }
+    subnet3 = {
+      cidr_block = "10.0.100.0/24"
+      public     = false
+  }
+    subnet4 = {
+      cidr_block = "10.0.101.0/24"
+      public     = false
+    }
   }
 
   validation {
@@ -61,4 +69,27 @@ variable "ecs_service_name" {
   description = "The name of the ECS service"
   type        = string
 
+}
+
+variable "external_dns_image" {
+  description = "The container image to use for the external-dns ECS service"
+  type        = string
+  default = "v0.15.0"
+}
+
+variable "external_dns_domain_filter" {
+  description = "The domain filter for the external-dns ECS service"
+  type        = string
+  default = "lroquecu.com"
+}
+
+variable "region" {
+  description = "The AWS region to deploy to"
+  type        = string
+  default = "us-east-1"
+}
+
+variable "domain_name" {
+  description = "The domain name to use for the ECS service"
+  type        = string
 }
