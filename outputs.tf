@@ -13,3 +13,8 @@ output "alb_dns_name" {
   description = "DNS name of the ALB"
   value       = aws_lb.main.dns_name
 }
+
+output "service_dns" {
+  description = "DNS name for accessing the service"
+  value       = var.domain_name
+}
