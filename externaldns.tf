@@ -40,6 +40,18 @@ resource "aws_iam_role_policy" "external_dns" {
         Resource = [
           "*"
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:CreateLogGroup"
+        ]
+        Resource = [
+          "arn:aws:logs:*:*:log-group:/ecs/external-dns*",
+          "arn:aws:logs:*:*:log-group:/ecs/external-dns*:log-stream:*"
+        ]
       }
     ]
   })
