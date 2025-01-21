@@ -104,3 +104,11 @@ resource "aws_ecs_service" "external_dns" {
     security_groups = [aws_security_group.external_dns.id]
   }
 }
+
+resource "aws_cloudwatch_log_group" "external_dns" {
+  name              = "/ecs/external-dns"
+  retention_in_days = 7
+  tags = merge(local.common_tags, {
+    Name = "${local.project_name}-external-dns-logs"
+  })
+}
