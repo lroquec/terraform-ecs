@@ -48,11 +48,11 @@ resource "aws_iam_role_policy" "external_dns" {
 resource "aws_ecs_task_definition" "external_dns" {
   family                   = "external-dns"
   requires_compatibilities = ["FARGATE"]
-  network_mode            = "awsvpc"
-  cpu                     = 256
-  memory                  = 512
-  execution_role_arn      = aws_iam_role.external_dns.arn
-  task_role_arn           = aws_iam_role.external_dns.arn
+  network_mode             = "awsvpc"
+  cpu                      = 256
+  memory                   = 512
+  execution_role_arn       = aws_iam_role.external_dns.arn
+  task_role_arn            = aws_iam_role.external_dns.arn
 
   container_definitions = jsonencode([
     {
@@ -101,6 +101,6 @@ resource "aws_ecs_service" "external_dns" {
 
   network_configuration {
     subnets         = module.vpc.private_subnets
-    security_groups = [ aws_security_group.external_dns.id ]
+    security_groups = [aws_security_group.external_dns.id]
   }
 }

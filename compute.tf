@@ -165,7 +165,7 @@ resource "aws_ecs_task_definition" "main" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.ecs_execution_role.arn
-  track_latest = true
+  track_latest             = true
 
   container_definitions = jsonencode([
     {
