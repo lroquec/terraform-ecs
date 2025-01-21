@@ -18,6 +18,7 @@ This project provisions an AWS infrastructure for running containerized applicat
 - AWS Account
 
 ## Project Structure
+```
 ├── compute.tf # ECS, ALB and security group configurations 
 ├── networking.tf # VPC and subnet configurations 
 ├── outputs.tf # Infrastructure output values 
@@ -25,7 +26,7 @@ This project provisions an AWS infrastructure for running containerized applicat
 ├── shared_locals.tf # Common local variables 
 ├── terraform.tfvars # Variable values 
 └── variables.tf # Variable definitions
-
+```
 
 ## Usage
 
