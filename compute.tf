@@ -169,7 +169,7 @@ resource "aws_ecs_task_definition" "main" {
 
   container_definitions = jsonencode([
     {
-      name  = "MyContainer"
+      name  = var.ecs_service_name
       image = var.container_image
       portMappings = [
         {
