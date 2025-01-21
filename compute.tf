@@ -42,8 +42,8 @@ resource "aws_security_group_rule" "allow_container_all_outbound" {
 
 resource "aws_security_group_rule" "allow_container_inbound" {
   type                     = "ingress"
-  from_port                = 5000
-  to_port                  = 5000
+  from_port                = var.container_port
+  to_port                  = var.container_port
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.allow_http_inbound.id # Allow traffic from the ALB
   security_group_id        = aws_security_group.allow_container.id
@@ -64,7 +64,7 @@ resource "aws_lb" "main" {
 }
 
 resource "aws_lb_target_group" "main" {
-  port        = 5000
+  port        = var.container_port
   protocol    = "HTTP"
   vpc_id      = module.vpc.vpc_id
   target_type = "ip"
@@ -173,7 +173,7 @@ resource "aws_ecs_task_definition" "main" {
       image = var.container_image
       portMappings = [
         {
-          containerPort = 5000
+          containerPort = var.container_port
           protocol      = "tcp"
         }
       ]
@@ -211,8 +211,8 @@ resource "aws_ecs_service" "main" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.main.arn
-    container_name   = "MyContainer"
-    container_port   = 5000
+    container_name   = var.ecs_service_name
+    container_port   = var.container_port
   }
 
   depends_on = [aws_lb_listener.front_end]

@@ -70,3 +70,8 @@ variable "ecs_service_name" {
   type        = string
 
 }
+
+variable "container_port" {
+  description = "The port the container listens on"
+  type        = number
+}
