@@ -26,11 +26,11 @@ resource "aws_security_group_rule" "allow_http_inbound" {
 
 resource "aws_security_group_rule" "allow_container_inbound" {
   type                     = "ingress"
-  from_port               = 5000
-  to_port                 = 5000
-  protocol                = "tcp"
+  from_port                = 5000
+  to_port                  = 5000
+  protocol                 = "tcp"
   source_security_group_id = aws_security_group.allow_http_inbound.id # Allow traffic from the ALB
-  security_group_id       = aws_security_group.allow_container.id
+  security_group_id        = aws_security_group.allow_container.id
 }
 
 # ALB Resources
