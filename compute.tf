@@ -217,8 +217,7 @@ resource "aws_ecs_service" "main" {
 
   depends_on = [aws_lb_listener.front_end]
 
-  tags = {
-    "external-dns/record-name" = var.domain_name
-    "external-dns/record-type" = "A"
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.project_name}-ecs-service"
+  })
 }

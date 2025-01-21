@@ -70,26 +70,3 @@ variable "ecs_service_name" {
   type        = string
 
 }
-
-variable "external_dns_image" {
-  description = "The container image to use for the external-dns ECS service"
-  type        = string
-  default     = "v0.15.0"
-}
-
-variable "external_dns_domain_filter" {
-  description = "The domain filter for the external-dns ECS service"
-  type        = string
-  default     = "lroquecu.com"
-}
-
-variable "region" {
-  description = "The AWS region to deploy to"
-  type        = string
-  default     = "us-east-1"
-}
-
-variable "domain_name" {
-  description = "The domain name to use for the ECS service"
-  type        = string
-}
