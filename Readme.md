@@ -14,14 +14,15 @@ Before you begin, ensure you have the following installed:
 
 ```
 /home/laura/tests/terraform-ecs/
-├── main.tf
+├── compute.tf
+├── externaldns.tf
+├── networking.tf
+├── provider.tf
+├── shared_locals.tf
+├── terraform.tfvars
 ├── variables.tf
 ├── outputs.tf
 ├── README.md
-└── modules/
-   ├── vpc/
-   ├── ecs/
-   └── security-groups/
 ```
 
 ## Getting Started
@@ -71,6 +72,47 @@ The ECS module creates an ECS cluster, task definitions, and services to run you
 
 The Security Groups module defines the necessary security groups to control inbound and outbound traffic to your ECS services.
 
+## External DNS Service
+
+The external DNS service is set up using the `externaldns.tf` file. This file contains the necessary resources and configurations to manage DNS records for your ECS services.
+
+### Purpose
+
+The `externaldns.tf` file is responsible for setting up the external DNS service, which automatically updates DNS records based on the state of your ECS services. This ensures that your services are always accessible via their domain names.
+
+### Step-by-Step Instructions
+
+1. **Review and modify variables:**
+
+   Edit the `variables.tf` file to customize the external DNS configuration according to your requirements. Pay attention to the following variables:
+
+   - `external_dns_image`: The container image to use for the external DNS service.
+   - `external_dns_domain_filter`: The domain filter for the external DNS service.
+   - `ecs_cluster_name`: The name of the ECS cluster.
+
+2. **Apply the configuration:**
+
+   ```sh
+   terraform apply
+   ```
+
+   Type `yes` when prompted to confirm the changes.
+
+### Required Variables
+
+The following variables are required for the external DNS service:
+
+- `external_dns_image`: The container image to use for the external DNS service.
+- `external_dns_domain_filter`: The domain filter for the external DNS service.
+- `ecs_cluster_name`: The name of the ECS cluster.
+
+### Dependencies
+
+The external DNS service depends on the following resources:
+
+- ECS cluster: The external DNS service must be deployed in the same ECS cluster as your other services.
+- VPC: The external DNS service requires a VPC with private subnets for its network configuration.
+
 ## Outputs
 
 After applying the Terraform configuration, you can view the outputs using:
@@ -93,4 +135,4 @@ Type `yes` when prompted to confirm the destruction.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU General Public License. See the [LICENSE](LICENSE) file for details.
